@@ -1,20 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Copyright></Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="libs\Aspose.Cells.dll" />
-    <None Remove="libs\v8sharp.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="libs\Aspose.Cells.dll" />
-    <Content Include="libs\v8sharp.dll" />
+    <Compile Remove="libs\**" />
+    <EmbeddedResource Remove="libs\**" />
+    <None Remove="libs\**" />
   </ItemGroup>
 
   <ItemGroup>

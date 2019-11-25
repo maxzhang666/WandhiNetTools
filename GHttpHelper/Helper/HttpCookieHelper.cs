@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-using CsharpHttpHelper.Item;
+using GHttpHelper.Item;
 using System.Net;
 
-namespace CsharpHttpHelper.Helper
+namespace GHttpHelper.Helper
 {
     /// <summary>
-    /// Cookie操作帮助类 Copyright：http://www.httphelper.com/
+    /// Cookie操作帮助类
     /// </summary>
     internal static class HttpCookieHelper
     {

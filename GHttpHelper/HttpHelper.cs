@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Net;
 using GHttpHelper.BaseBll;
 using System.Drawing;
+using GHttpHelper.Helper;
 using CsharpHttpHelper.Helper;
-using CsharpHttpHelper.Item;
+using GHttpHelper.Item;
 using System.Collections.Specialized;
-using System.Runtime.Remoting.Messaging;
 using WandhiHelper.StringHelp;
 
 namespace GHttpHelper
@@ -59,7 +58,9 @@ namespace GHttpHelper
         {
             resultheadler = resultMainName;
             GethtmlHandler handler = new GethtmlHandler(GetHtml);
-            handler.BeginInvoke(item, new AsyncCallback(CallbackFunc), "AsycState:OK");
+            //handler.BeginInvoke(item,f=> {},"");
+            handler.Invoke(item);
+            //handler.BeginInvoke(item, new AsyncCallback(CallbackFunc), "AsycState:OK");
         }
         /// <summary>
         /// 内部回调方法
@@ -67,13 +68,13 @@ namespace GHttpHelper
         /// <param name="resultType">返回值</param>
         private void CallbackFunc(IAsyncResult resultType)
         {
-            //result 是“加法类.Add()方法”的返回值             
-            //AsyncResult 是IAsyncResult接口的一个实现类，引用空间：System.Runtime.Remoting.Messaging             
+            //result 是“加法类.Add()方法”的返回值
+            //AsyncResult 是IAsyncResult接口的一个实现类，引用空间：System.Runtime.Remoting.Messaging
             //AsyncDelegate 属性可以强制转换为用户定义的委托的实际类。
-            GethtmlHandler handler = (GethtmlHandler)((AsyncResult)resultType).AsyncDelegate;
-            HttpResult result = handler.EndInvoke(resultType);
+            //GethtmlHandler handler = (GethtmlHandler)((AsyncResult)resultType).AsyncDelegate;
+            //HttpResult result = handler.EndInvoke(resultType);
             //回调方法传回执行结果
-            resultheadler.Invoke(result);
+            //resultheadler.Invoke(result);
         }
         /// <summary>
         /// 根据Url获取图片
@@ -104,7 +105,7 @@ namespace GHttpHelper
         /// <returns>精简串</returns>
         public static string GetSmallCookie(string strcookie)
         {
-            return HttpCookieHelper.GetSmallCookie(strcookie);
+            return Helper.HttpCookieHelper.GetSmallCookie(strcookie);
         }
         /// <summary>
         /// 将字符串Cookie转为CookieCollection
@@ -113,7 +114,7 @@ namespace GHttpHelper
         /// <returns>List-CookieItem</returns>
         public static CookieCollection StrCookieToCookieCollection(string strcookie)
         {
-            return HttpCookieHelper.StrCookieToCookieCollection(strcookie);
+            return Helper.HttpCookieHelper.StrCookieToCookieCollection(strcookie);
         }
         /// <summary>
         /// 将CookieCollection转为字符串Cookie
@@ -122,7 +123,7 @@ namespace GHttpHelper
         /// <returns>strcookie</returns>
         public static string CookieCollectionToStrCookie(CookieCollection cookie)
         {
-            return HttpCookieHelper.CookieCollectionToStrCookie(cookie);
+            return Helper.HttpCookieHelper.CookieCollectionToStrCookie(cookie);
         }
         /// <summary>
         /// 自动合并两个Cookie的值返回更新后结果 
@@ -132,7 +133,7 @@ namespace GHttpHelper
         /// <returns>返回更新后的Cookie</returns>
         public static string GetMergeCookie(string cookie1, string cookie2)
         {
-            return HttpCookieHelper.GetMergeCookie(cookie1, cookie2);
+            return Helper.HttpCookieHelper.GetMergeCookie(cookie1, cookie2);
         }
         #endregion
 
@@ -216,7 +217,7 @@ namespace GHttpHelper
         /// <returns>转换后的对象，失败为Null</returns>
         public static object JsonToObject<T>(string jsonstr)
         {
-            return JsonHelper.JsonToObject<T>(jsonstr);
+            return Helper.JsonHelper.JsonToObject<T>(jsonstr);
         }
         /// <summary>
         /// 将指定的对象转为Json字符串

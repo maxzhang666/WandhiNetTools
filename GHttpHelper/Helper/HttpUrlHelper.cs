@@ -79,42 +79,10 @@ namespace CsharpHttpHelper.Helper
         {
             try
             {
-                IPHostEntry hostInfo = Dns.GetHostByName(GetUrlHost(url));
+                IPHostEntry hostInfo = Dns.GetHostEntry(GetUrlHost(url));
                 return hostInfo.AddressList[0].ToString();
             }
             catch { return string.Empty; }
-        }
-
-        /// <summary>
-        /// 获取当前页面的URL（五个数字可选 1~5 ）
-        /// </summary>
-        /// <param name="selectNO">1完整url,2域名之后,3域名之后不含参数,4只有域名,5获取参数</param>
-        /// <returns></returns>
-        public string getNowURL(int selectNO)
-        {
-            string strURL = "";
-            switch (selectNO)
-            {
-                case 1:
-                    strURL = HttpContext.Current.Request.Url.ToString();
-                    break;
-                case 2:
-                    strURL = HttpContext.Current.Request.RawUrl;
-                    break;
-                case 3:
-                    strURL = HttpContext.Current.Request.Url.AbsolutePath;
-                    break;
-                case 4:
-                    strURL = HttpContext.Current.Request.Url.Host;
-                    break;
-                case 5:
-                    strURL = HttpContext.Current.Request.Url.Query;
-                    break;
-                default:
-                    strURL = HttpContext.Current.Request.Url.ToString();
-                    break;
-            }
-            return strURL;
-        }
+        }       
     }
 }

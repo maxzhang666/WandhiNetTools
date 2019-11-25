@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CsharpHttpHelper.Item;
+using GHttpHelper.Item;
 using System.Text.RegularExpressions;
 using System.Web;
-using CsharpHttpHelper.Static;
-using CsharpHttpHelper.Enum;
+using GHttpHelper.Static;
+using GHttpHelper.Enum;
 
-namespace CsharpHttpHelper.Helper
+namespace GHttpHelper.Helper
 {
     /// <summary>
-    /// Html操作相关  Copyright：http://www.httphelper.com/
+    /// Html操作相关
     /// </summary>
     internal class HtmlHelper
     {

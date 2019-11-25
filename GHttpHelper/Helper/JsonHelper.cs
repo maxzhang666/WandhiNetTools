@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Script.Serialization;
 
-namespace CsharpHttpHelper.Helper
+namespace GHttpHelper.Helper
 {
     /// <summary>
-    /// Json操作对象  Copyright：http://www.httphelper.com/
+    /// Json操作对象
     /// </summary>
     internal class JsonHelper
     {
@@ -19,9 +15,8 @@ namespace CsharpHttpHelper.Helper
         internal static object JsonToObject<T>(string jsonstr)
         {
             try
-            {
-                JavaScriptSerializer jss = new JavaScriptSerializer();
-                return jss.Deserialize<T>(jsonstr);
+            {                
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(jsonstr);
             }
             catch (Exception)
             {
@@ -36,9 +31,8 @@ namespace CsharpHttpHelper.Helper
         internal static string ObjectToJson(object obj)
         {
             try
-            {
-                JavaScriptSerializer jss = new JavaScriptSerializer();
-                return jss.Serialize(obj);
+            {                
+                return Newtonsoft.Json.JsonConvert.SerializeObject(obj); ;
             }
             catch (Exception)
             {

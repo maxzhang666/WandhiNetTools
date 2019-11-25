@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using GHttpHelper.Helper;
 using System.IO;
 using CsharpHttpHelper.Helper;
 using GHttpHelper.Base;

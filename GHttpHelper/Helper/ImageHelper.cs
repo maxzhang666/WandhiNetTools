@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.UI.WebControls;
-using System.IO;
+﻿using System.IO;
 using System.Drawing;
 
-namespace CsharpHttpHelper.Helper
+namespace GHttpHelper.Helper
 {
     internal class ImageHelper
     {
@@ -15,7 +10,7 @@ namespace CsharpHttpHelper.Helper
         /// </summary>
         /// <param name=" b">字节数组</param>
         /// <returns>返回图片</returns>
-        internal static System.Drawing.Image ByteToImage(byte[] b)
+        internal static Image ByteToImage(byte[] b)
         {
             try
             {
