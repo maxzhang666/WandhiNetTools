@@ -15,8 +15,7 @@ namespace WandhiHelper.TimeHelp
         /// <returns></returns>
         public static long ConvertToTimeStamp(DateTime time) {
 
-            DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970,1,1, 0, 0, 0, 0));
-
+            DateTime startTime = DateTime.UtcNow;
             long t=(time.Ticks-startTime.Ticks)/ 10000;
 
             return t;
@@ -39,7 +38,7 @@ namespace WandhiHelper.TimeHelp
         /// <returns></returns>        
         public static string TimeStampToDateTime(string timeStamp)
         {
-            DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970,1,1,0,0,0,0));
+            DateTime startTime = DateTime.UtcNow;
 
             long t = long.Parse(timeStamp + "0000");
 
@@ -59,7 +58,7 @@ namespace WandhiHelper.TimeHelp
         /// <returns>返回13位时间戳</returns>
         public static string GetUnixTime(DateTime nowTime)
         {
-            DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0));
+            DateTime startTime = DateTime.UtcNow;
 
             long unixTime = (long)Math.Round((nowTime - startTime).TotalMilliseconds, MidpointRounding.AwayFromZero);
 
@@ -72,7 +71,7 @@ namespace WandhiHelper.TimeHelp
         /// <returns>返回13位时间戳</returns>
         public static string GetUnixTime()
         {
-            DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0));
+            DateTime startTime = DateTime.UtcNow;
 
             DateTime nowTime = DateTime.Now;
 

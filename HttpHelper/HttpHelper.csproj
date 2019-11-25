@@ -75,11 +75,5 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WandhiHelper\WandhiHelper.csproj">
-      <Project>{5fe397b5-398d-4fd3-a41f-5f572562f52d}</Project>
-      <Name>WandhiHelper</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
