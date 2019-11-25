@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Wandhi</Authors>
+    <Product>Wandhi</Product>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Wandhi</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
