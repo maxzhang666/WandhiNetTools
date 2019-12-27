@@ -7,7 +7,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Wandhi</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
+    <PackageReleaseNotes>优化错误提示</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
