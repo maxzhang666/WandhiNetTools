@@ -59,7 +59,7 @@ namespace GHttpHelper
             }
             else
             {
-                throw new Exception("请求异常");
+                throw new Exception($"请求异常:{res.StatusCode}") { Source = JsonConvert.SerializeObject(res) };
             }
         }
         public static T Post<T>(string url, object data, RequestType postType = RequestType.Form)
