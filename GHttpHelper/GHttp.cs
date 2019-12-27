@@ -39,7 +39,7 @@ namespace GHttpHelper
             var obj = JsonConvert.DeserializeObject<T>(res);
             return obj;
         }
-        public static string Post(string url, object data, RequestType postType = RequestType.Form)
+        public static string Post(string url, object data, RequestType postType = RequestType.Form, string Referer = "")
         {
             var item = new HttpItem
             {
@@ -52,6 +52,10 @@ namespace GHttpHelper
             {
                 item.ContentType = "application/x-www-form-urlencoded";
             }
+            if (!string.IsNullOrEmpty(Referer))
+            {
+                item.Referer = Referer;
+            }
             var res = new HttpHelper().GetHtml(item);
             if (res.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -62,9 +66,9 @@ namespace GHttpHelper
                 throw new Exception($"请求异常:{res.StatusCode}") { Source = JsonConvert.SerializeObject(res) };
             }
         }
-        public static T Post<T>(string url, object data, RequestType postType = RequestType.Form)
+        public static T Post<T>(string url, object data, RequestType postType = RequestType.Form, string Referer = "")
         {
-            var res = Post(url, data, postType);
+            var res = Post(url, data, postType, Referer);
             var obj = JsonConvert.DeserializeObject<T>(res);
             return obj;
         }
