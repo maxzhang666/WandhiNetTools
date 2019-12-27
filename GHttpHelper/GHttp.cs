@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Linq;
+using System.Text;
 using System.Web;
 using WandhiHelper.Extension;
 
@@ -39,7 +40,7 @@ namespace GHttpHelper
             var obj = JsonConvert.DeserializeObject<T>(res);
             return obj;
         }
-        public static string Post(string url, object data, RequestType postType = RequestType.Form, string Referer = "")
+        public static string Post(string url, object data, RequestType postType = RequestType.Form, string Referer = "", Encoding Encoding = null)
         {
             var item = new HttpItem
             {
@@ -56,6 +57,10 @@ namespace GHttpHelper
             {
                 item.Referer = Referer;
             }
+            if (Encoding != null)
+            {
+                item.PostEncoding = Encoding;
+            }
             var res = new HttpHelper().GetHtml(item);
             if (res.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -66,9 +71,9 @@ namespace GHttpHelper
                 throw new Exception($"请求异常:{res.StatusCode}") { Source = JsonConvert.SerializeObject(res) };
             }
         }
-        public static T Post<T>(string url, object data, RequestType postType = RequestType.Form, string Referer = "")
+        public static T Post<T>(string url, object data, RequestType postType = RequestType.Form, string Referer = "", Encoding Encoding = null)
         {
-            var res = Post(url, data, postType, Referer);
+            var res = Post(url, data, postType, Referer, Encoding);
             var obj = JsonConvert.DeserializeObject<T>(res);
             return obj;
         }

@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GHttpHelper", "GHttpHelper\GHttpHelper.csproj", "{EA3F4478-08C3-45E1-9571-93B61F8791A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WandhiHelper", "WandhiHelper\WandhiHelper.csproj", "{4720D7D9-2DDC-4120-B28F-BBEF1111BDFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WandhiHelper", "WandhiHelper\WandhiHelper.csproj", "{4720D7D9-2DDC-4120-B28F-BBEF1111BDFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GHttpHelperTest", "GHttpHelperTest\GHttpHelperTest.csproj", "{90347708-FFC0-47B6-AA25-76C748B2068B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{4720D7D9-2DDC-4120-B28F-BBEF1111BDFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4720D7D9-2DDC-4120-B28F-BBEF1111BDFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4720D7D9-2DDC-4120-B28F-BBEF1111BDFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90347708-FFC0-47B6-AA25-76C748B2068B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90347708-FFC0-47B6-AA25-76C748B2068B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90347708-FFC0-47B6-AA25-76C748B2068B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90347708-FFC0-47B6-AA25-76C748B2068B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
