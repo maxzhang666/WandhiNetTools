@@ -16,12 +16,19 @@ namespace GHttpHelper
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public static string Get(string url)
+        public static string Get(string url, WebHeaderCollection headers = null)
         {
             var http = new HttpItem()
             {
                 URL = url
             };
+            if (headers != null)
+            {
+                foreach (var item in headers.ToKeyValue())
+                {
+                    http.Header.Add(item.Key, item.Value);
+                }
+            }
             var res = new HttpHelper().GetHtml(http);
             if (res.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -35,9 +42,9 @@ namespace GHttpHelper
         /// <typeparam name="T"></typeparam>
         /// <param name="url"></param>
         /// <returns></returns>
-        public static T Get<T>(string url)
+        public static T Get<T>(string url, WebHeaderCollection headers = null)
         {
-            var res = Get(url);
+            var res = Get(url, headers);
             var obj = JsonConvert.DeserializeObject<T>(res);
             return obj;
         }
