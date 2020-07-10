@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Web;
 using WandhiHelper.Extension;
@@ -40,6 +41,15 @@ namespace GHttpHelper
             var obj = JsonConvert.DeserializeObject<T>(res);
             return obj;
         }
+        /// <summary>
+        /// Post
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="data">提交数据</param>
+        /// <param name="postType">提交类型</param>
+        /// <param name="Referer"></param>
+        /// <param name="Encoding">编码方式</param>
+        /// <returns></returns>
         public static string Post(string url, object data, RequestType postType = RequestType.Form, string Referer = "", Encoding Encoding = null)
         {
             var item = new HttpItem
@@ -71,9 +81,63 @@ namespace GHttpHelper
                 throw new Exception($"请求异常:{res.StatusCode}") { Source = JsonConvert.SerializeObject(res) };
             }
         }
+        /// <summary>
+        /// Post
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="data"></param>
+        /// <param name="postType"></param>
+        /// <param name="Headers"></param>
+        /// <param name="Referer"></param>
+        /// <param name="Encoding"></param>
+        /// <returns></returns>
+        public static string Post(string url, object data, RequestType postType = RequestType.Form, WebHeaderCollection Headers = null, string Referer = "", Encoding Encoding = null)
+        {
+            var item = new HttpItem
+            {
+                URL = url,
+                Method = "POST",
+                PostDataType = Enum.PostDataType.String,
+                Postdata = postType == RequestType.Form ? GenPara(data) : JsonConvert.SerializeObject(data)
+            };
+            if (postType == RequestType.Form)
+            {
+                item.ContentType = "application/x-www-form-urlencoded";
+            }
+            if (!string.IsNullOrEmpty(Referer))
+            {
+                item.Referer = Referer;
+            }
+            if (Encoding != null)
+            {
+                item.PostEncoding = Encoding;
+            }
+            if (Headers != null)
+            {
+                foreach (var _item in Headers.ToKeyValue())
+                {
+                    item.Header.Add(_item.Key, _item.Value);
+                }
+            }
+            var res = new HttpHelper().GetHtml(item);
+            if (res.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return res.Html;
+            }
+            else
+            {
+                return $"请求异常:{res.StatusCode},Source:{JsonConvert.SerializeObject(res)}";
+            }
+        }
         public static T Post<T>(string url, object data, RequestType postType = RequestType.Form, string Referer = "", Encoding Encoding = null)
         {
             var res = Post(url, data, postType, Referer, Encoding);
+            var obj = JsonConvert.DeserializeObject<T>(res);
+            return obj;
+        }
+        public static T Post<T>(string url, object data, RequestType postType = RequestType.Form, WebHeaderCollection Headers = null, string Referer = "", Encoding Encoding = null)
+        {
+            var res = Post(url, data, postType, Headers, Referer, Encoding);
             var obj = JsonConvert.DeserializeObject<T>(res);
             return obj;
         }
