@@ -7,11 +7,16 @@
     <Copyright>Wandhi</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>1.0.7</Version>
-    <PackageReleaseNotes>增加自定义请求</PackageReleaseNotes>
-    <PackageVersion>1.0.8</PackageVersion>
+    <PackageReleaseNotes>Github CI 测试</PackageReleaseNotes>
+    <PackageVersion>1.0.9</PackageVersion>
     <RepositoryUrl>https://github.com/maxzhang666/WandhiNetTools</RepositoryUrl>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>default</LangVersion>
+    <Description>自用的一些网络工具类</Description>
+    <PackageProjectUrl>https://github.com/maxzhang666/WandhiNetTools</PackageProjectUrl>
+    <PackageLicenseUrl>https://licenses.nuget.org/MIT</PackageLicenseUrl>
+    <RepositoryType>Github</RepositoryType>
+    <PackageTags>Net</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
