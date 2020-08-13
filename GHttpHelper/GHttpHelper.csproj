@@ -14,7 +14,7 @@
     <LangVersion>default</LangVersion>
     <Description>自用的一些网络工具类</Description>
     <PackageProjectUrl>https://github.com/maxzhang666/WandhiNetTools</PackageProjectUrl>
-    <PackageLicenseUrl>https://licenses.nuget.org/MIT</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <RepositoryType>Github</RepositoryType>
     <PackageTags>Net</PackageTags>
   </PropertyGroup>
