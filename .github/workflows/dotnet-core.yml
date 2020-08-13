@@ -27,5 +27,7 @@ jobs:
       uses: brandedoutcast/publish-nuget@v2.5.5
       with:
         PROJECT_FILE_PATH: GHttpHelper/GHttpHelper.csproj
+        PACKAGE_NAME: GHttpHelper
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-        VERSION_REGEX: ^\s*<Version>(.*)<\/Version>\s*$
+        VERSION_FILE_PATH: GHttpHelper/GHttpHelper.csproj
+        VERSION_REGEX: ^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$
