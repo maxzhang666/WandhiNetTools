@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <Authors>MaxZhang</Authors>
     <Product>Wandhi</Product>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -11,6 +10,8 @@
     <PackageReleaseNotes>增加自定义请求</PackageReleaseNotes>
     <PackageVersion>1.0.8</PackageVersion>
     <RepositoryUrl>https://github.com/maxzhang666/WandhiNetTools</RepositoryUrl>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
