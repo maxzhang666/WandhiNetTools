@@ -18,17 +18,24 @@ namespace GHttpHelper.Base
     internal class HttphelperBase
     {
         #region 预定义方变量
+
         //默认的编码
         private Encoding encoding = Encoding.Default;
+
         //Post数据编码
         private Encoding postencoding = Encoding.Default;
+
         //HttpWebRequest对象用来发起请求
         private HttpWebRequest request = null;
+
         //获取影响流的数据对象
         private HttpWebResponse response = null;
+
         //设置本地的出口ip和端口
         private IPEndPoint _IPEndPoint = null;
+
         #endregion
+
         #region internal
 
         /// <summary>
@@ -49,12 +56,13 @@ namespace GHttpHelper.Base
             catch (Exception ex)
             {
                 //配置参数时出错
-                return new HttpResult() { Cookie = string.Empty, Header = null, Html = ex.Message, StatusDescription = "配置参数时出错：" + ex.Message };
+                return new HttpResult() {Cookie = string.Empty, Header = null, Html = ex.Message, StatusDescription = "配置参数时出错：" + ex.Message};
             }
+
             try
             {
                 //请求数据
-                using (response = (HttpWebResponse)request.GetResponse())
+                using (response = (HttpWebResponse) request.GetResponse())
                 {
                     GetData(item, result);
                 }
@@ -63,7 +71,7 @@ namespace GHttpHelper.Base
             {
                 if (ex.Response != null)
                 {
-                    using (response = (HttpWebResponse)ex.Response)
+                    using (response = (HttpWebResponse) ex.Response)
                     {
                         GetData(item, result);
                     }
@@ -77,6 +85,7 @@ namespace GHttpHelper.Base
             {
                 result.Html = ex.Message;
             }
+
             if (item.IsToLower) result.Html = result.Html.ToLower();
             //重置request，response为空
             if (item.IsReset)
@@ -84,8 +93,10 @@ namespace GHttpHelper.Base
                 request = null;
                 response = null;
             }
+
             return result;
         }
+
         /// <summary>
         /// 快速Post数据这个访求与GetHtml一样，只是不接收返回数据，只做提交。
         /// </summary>
@@ -104,32 +115,44 @@ namespace GHttpHelper.Base
             catch (Exception ex)
             {
                 //配置参数时出错
-                return new HttpResult() { Cookie = response.Headers["set-cookie"] != null ? response.Headers["set-cookie"] : string.Empty, Header = null, Html = ex.Message, StatusDescription = "配置参数时出错：" + ex.Message };
+                return new HttpResult()
+                    {Cookie = response.Headers["set-cookie"] != null ? response.Headers["set-cookie"] : string.Empty, Header = null, Html = ex.Message, StatusDescription = "配置参数时出错：" + ex.Message};
             }
+
             try
             {
                 //请求数据
-                using (response = (HttpWebResponse)request.GetResponse())
+                using (response = (HttpWebResponse) request.GetResponse())
                 {
                     //成功 不做处理只回成功状态
-                    return new HttpResult() { Cookie = response.Headers["set-cookie"] != null ? response.Headers["set-cookie"] : string.Empty, Header = response.Headers, StatusCode = response.StatusCode, StatusDescription = response.StatusDescription };
+                    return new HttpResult()
+                    {
+                        Cookie = response.Headers["set-cookie"] != null ? response.Headers["set-cookie"] : string.Empty, Header = response.Headers, StatusCode = response.StatusCode,
+                        StatusDescription = response.StatusDescription
+                    };
                 }
             }
             catch (WebException ex)
             {
-                using (response = (HttpWebResponse)ex.Response)
+                using (response = (HttpWebResponse) ex.Response)
                 {
                     //不做处理只回成功状态
-                    return new HttpResult() { Cookie = response.Headers["set-cookie"] != null ? response.Headers["set-cookie"] : string.Empty, Header = response.Headers, StatusCode = response.StatusCode, StatusDescription = response.StatusDescription };
+                    return new HttpResult()
+                    {
+                        Cookie = response.Headers["set-cookie"] != null ? response.Headers["set-cookie"] : string.Empty, Header = response.Headers, StatusCode = response.StatusCode,
+                        StatusDescription = response.StatusDescription
+                    };
                 }
             }
             catch (Exception ex)
             {
                 result.Html = ex.Message;
             }
+
             if (item.IsToLower) result.Html = result.Html.ToLower();
             return result;
         }
+
         #endregion
 
         #region GetData
@@ -145,7 +168,9 @@ namespace GHttpHelper.Base
             {
                 return;
             }
+
             #region base
+
             //获取StatusCode
             result.StatusCode = response.StatusCode;
             //获取最后访问的URl
@@ -164,9 +189,11 @@ namespace GHttpHelper.Base
                 item.Cookie = result.Cookie;
                 item.CookieCollection = result.CookieCollection;
             }
+
             #endregion
 
             #region 用户设置用编码
+
             //处理网页Byte
             byte[] ResponseByte = GetByte(item);
 
@@ -186,6 +213,7 @@ namespace GHttpHelper.Base
 
             #endregion
         }
+
         /// <summary>
         /// 设置返回的Byte
         /// </summary>
@@ -213,6 +241,7 @@ namespace GHttpHelper.Base
                 result.Html = encoding.GetString(enByte);
             }
         }
+
         /// <summary>
         /// 设置编码
         /// </summary>
@@ -230,6 +259,7 @@ namespace GHttpHelper.Base
                 {
                     c = meta.Groups[1].Value.ToLower().Trim();
                 }
+
                 string cs = string.Empty;
                 if (!string.IsNullOrWhiteSpace(response.CharacterSet))
                 {
@@ -267,6 +297,7 @@ namespace GHttpHelper.Base
                 }
             }
         }
+
         /// <summary>
         /// 提取网页Byte
         /// </summary>
@@ -284,7 +315,7 @@ namespace GHttpHelper.Base
                 else
                 {
                     //GZIIP处理
-                    if (response.ContentEncoding.Equals("gzip", StringComparison.InvariantCultureIgnoreCase))
+                    if (response.ContentEncoding != null && response.ContentEncoding.Equals("gzip", StringComparison.InvariantCultureIgnoreCase))
                     {
                         //开始读取流并设置编码方式
                         new GZipStream(response.GetResponseStream(), CompressionMode.Decompress).CopyTo(_stream, 10240);
@@ -295,11 +326,14 @@ namespace GHttpHelper.Base
                         response.GetResponseStream().CopyTo(_stream);
                     }
                 }
+
                 //获取Byte
                 ResponseByte = _stream.ToArray();
             }
+
             return ResponseByte;
         }
+
         #endregion
 
         #region SetRequest
@@ -315,23 +349,27 @@ namespace GHttpHelper.Base
                 //这一句一定要写在创建连接的前面。使用回调的方法进行证书验证。
                 ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(CheckValidationResult);
             }
+
             //初始化对像，并设置请求的URL地址
-            request = (HttpWebRequest)WebRequest.Create(item.URL);
+            request = (HttpWebRequest) WebRequest.Create(item.URL);
             if (item.IPEndPoint != null)
             {
                 _IPEndPoint = item.IPEndPoint;
                 //设置本地的出口ip和端口
                 request.ServicePoint.BindIPEndPointDelegate = new BindIPEndPoint(BindIPEndPointCallback);
             }
+
             request.AutomaticDecompression = item.AutomaticDecompression;
             // 验证证书
             SetCer(item);
             SetCerList(item);
             //设置Header参数
-            if (item.Header != null && item.Header.Count > 0) foreach (string key in item.Header.AllKeys)
+            if (item.Header != null && item.Header.Count > 0)
+                foreach (string key in item.Header.AllKeys)
                 {
                     request.Headers.Add(key, item.Header[key]);
                 }
+
             // 设置代理
             SetProxy(item);
             if (item.ProtocolVersion != null) request.ProtocolVersion = item.ProtocolVersion;
@@ -345,6 +383,7 @@ namespace GHttpHelper.Base
             {
                 request.Host = item.Host;
             }
+
             if (item.IfModifiedSince != null) request.IfModifiedSince = Convert.ToDateTime(item.IfModifiedSince);
             //Accept
             request.Accept = item.Accept;
@@ -366,6 +405,7 @@ namespace GHttpHelper.Base
             {
                 request.MaximumAutomaticRedirections = item.MaximumAutomaticRedirections;
             }
+
             //设置最大连接
             if (item.Connectionlimit > 0) request.ServicePoint.ConnectionLimit = item.Connectionlimit;
             //当出现“请求被中止: 未能创建 SSL/TLS 安全通道”时需要配置此属性 
@@ -373,9 +413,11 @@ namespace GHttpHelper.Base
             {
                 ServicePointManager.SecurityProtocol = item.SecurityProtocol;
             }
+
             //设置Post数据
             SetPostData(item);
         }
+
         /// <summary>
         /// 设置证书
         /// </summary>
@@ -395,6 +437,7 @@ namespace GHttpHelper.Base
                 }
             }
         }
+
         /// <summary>
         /// 设置多个证书
         /// </summary>
@@ -409,6 +452,7 @@ namespace GHttpHelper.Base
                 }
             }
         }
+
         /// <summary>
         /// 设置Cookie
         /// </summary>
@@ -428,6 +472,7 @@ namespace GHttpHelper.Base
                 request.CookieContainer = item.CookieContainer;
             }
         }
+
         /// <summary>
         /// 设置Post数据
         /// </summary>
@@ -441,13 +486,14 @@ namespace GHttpHelper.Base
                 {
                     postencoding = item.PostEncoding;
                 }
+
                 byte[] buffer = null;
                 //写入Byte类型
                 if (item.PostDataType == PostDataType.Byte && item.PostdataByte != null && item.PostdataByte.Length > 0)
                 {
                     //验证在得到结果时是否有传入数据
                     buffer = item.PostdataByte;
-                }//写入文件
+                } //写入文件
                 else if (item.PostDataType == PostDataType.FilePath && !string.IsNullOrWhiteSpace(item.Postdata))
                 {
                     StreamReader r = new StreamReader(item.Postdata, postencoding);
@@ -458,6 +504,7 @@ namespace GHttpHelper.Base
                 {
                     buffer = postencoding.GetBytes(item.Postdata);
                 }
+
                 if (buffer != null)
                 {
                     request.ContentLength = buffer.Length;
@@ -469,6 +516,7 @@ namespace GHttpHelper.Base
                 }
             }
         }
+
         /// <summary>
         /// 设置代理
         /// </summary>
@@ -480,6 +528,7 @@ namespace GHttpHelper.Base
             {
                 isIeProxy = item.ProxyIp.ToLower().Contains("ieproxy");
             }
+
             if (!string.IsNullOrWhiteSpace(item.ProxyIp) && !isIeProxy)
             {
                 //设置代理服务器
@@ -510,9 +559,11 @@ namespace GHttpHelper.Base
                 request.Proxy = item.WebProxy;
             }
         }
+
         #endregion
 
         #region private main
+
         /// <summary>
         /// 回调验证证书问题
         /// </summary>
@@ -521,7 +572,10 @@ namespace GHttpHelper.Base
         /// <param name="chain">X509Chain</param>
         /// <param name="errors">SslPolicyErrors</param>
         /// <returns>bool</returns>
-        private bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) { return true; }
+        private bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
+        {
+            return true;
+        }
 
         /// <summary>
         /// 通过设置这个属性，可以在发出连接的时候绑定客户端发出连接所使用的IP地址。 
@@ -532,7 +586,7 @@ namespace GHttpHelper.Base
         /// <returns></returns>
         public IPEndPoint BindIPEndPointCallback(ServicePoint servicePoint, IPEndPoint remoteEndPoint, int retryCount)
         {
-            return _IPEndPoint;//端口号
+            return _IPEndPoint; //端口号
         }
 
         #endregion
