@@ -8,7 +8,9 @@
     <Copyright>Wandhi</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>1.0.7</Version>
-    <PackageReleaseNotes>增加编码设置</PackageReleaseNotes>
+    <PackageReleaseNotes>增加自定义请求</PackageReleaseNotes>
+    <PackageVersion>1.0.8</PackageVersion>
+    <RepositoryUrl>https://github.com/maxzhang666/WandhiNetTools</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">

@@ -29,13 +29,16 @@ namespace GHttpHelper
                     http.Header.Add(item.Key, item.Value);
                 }
             }
+
             var res = new HttpHelper().GetHtml(http);
             if (res.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 return res.Html;
             }
+
             return "";
         }
+
         /// <summary>
         /// get
         /// </summary>
@@ -48,6 +51,7 @@ namespace GHttpHelper
             var obj = JsonConvert.DeserializeObject<T>(res);
             return obj;
         }
+
         /// <summary>
         /// Post
         /// </summary>
@@ -59,25 +63,29 @@ namespace GHttpHelper
         /// <returns></returns>
         public static string Post(string url, object data, RequestType postType = RequestType.Form, string Referer = "", Encoding Encoding = null)
         {
+            if (postType == RequestType.Json)
+            {
+                return PostJson(url, JsonConvert.SerializeObject(data), Referer, Encoding);
+            }
+
             var item = new HttpItem
             {
                 URL = url,
                 Method = "POST",
                 PostDataType = Enum.PostDataType.String,
-                Postdata = postType == RequestType.Form ? GenPara(data) : JsonConvert.SerializeObject(data)
+                Postdata = GenPara(data),
+                ContentType = "application/x-www-form-urlencoded"
             };
-            if (postType == RequestType.Form)
-            {
-                item.ContentType = "application/x-www-form-urlencoded";
-            }
             if (!string.IsNullOrEmpty(Referer))
             {
                 item.Referer = Referer;
             }
+
             if (Encoding != null)
             {
                 item.PostEncoding = Encoding;
             }
+
             var res = new HttpHelper().GetHtml(item);
             if (res.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -85,9 +93,49 @@ namespace GHttpHelper
             }
             else
             {
-                throw new Exception($"请求异常:{res.StatusCode}") { Source = JsonConvert.SerializeObject(res) };
+                throw new Exception($"请求异常:{res.StatusCode}") {Source = JsonConvert.SerializeObject(res)};
             }
         }
+
+        /// <summary>
+        /// Post
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="data">提交数据</param>
+        /// <param name="postType">提交类型</param>
+        /// <param name="Referer"></param>
+        /// <param name="Encoding">编码方式</param>
+        /// <returns></returns>
+        public static string PostJson(string url, string data, string Referer = "", Encoding Encoding = null)
+        {
+            var item = new HttpItem
+            {
+                URL = url,
+                Method = "POST",
+                PostDataType = Enum.PostDataType.String,
+                Postdata = data
+            };
+            if (!string.IsNullOrEmpty(Referer))
+            {
+                item.Referer = Referer;
+            }
+
+            if (Encoding != null)
+            {
+                item.PostEncoding = Encoding;
+            }
+
+            var res = new HttpHelper().GetHtml(item);
+            if (res.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return res.Html;
+            }
+            else
+            {
+                throw new Exception($"请求异常:{res.StatusCode}") {Source = JsonConvert.SerializeObject(res)};
+            }
+        }
+
         /// <summary>
         /// Post
         /// </summary>
@@ -111,14 +159,17 @@ namespace GHttpHelper
             {
                 item.ContentType = "application/x-www-form-urlencoded";
             }
+
             if (!string.IsNullOrEmpty(Referer))
             {
                 item.Referer = Referer;
             }
+
             if (Encoding != null)
             {
                 item.PostEncoding = Encoding;
             }
+
             if (Headers != null)
             {
                 foreach (var _item in Headers.ToKeyValue())
@@ -126,6 +177,7 @@ namespace GHttpHelper
                     item.Header.Add(_item.Key, _item.Value);
                 }
             }
+
             var res = new HttpHelper().GetHtml(item);
             if (res.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -136,18 +188,21 @@ namespace GHttpHelper
                 return $"请求异常:{res.StatusCode},Source:{JsonConvert.SerializeObject(res)}";
             }
         }
+
         public static T Post<T>(string url, object data, RequestType postType = RequestType.Form, string Referer = "", Encoding Encoding = null)
         {
             var res = Post(url, data, postType, Referer, Encoding);
             var obj = JsonConvert.DeserializeObject<T>(res);
             return obj;
         }
+
         public static T Post<T>(string url, object data, RequestType postType = RequestType.Form, WebHeaderCollection Headers = null, string Referer = "", Encoding Encoding = null)
         {
             var res = Post(url, data, postType, Headers, Referer, Encoding);
             var obj = JsonConvert.DeserializeObject<T>(res);
             return obj;
         }
+
         /// <summary>
         /// form参数生成
         /// </summary>
@@ -160,6 +215,7 @@ namespace GHttpHelper
             return res;
         }
     }
+
     public enum RequestType
     {
         Json = 1,
