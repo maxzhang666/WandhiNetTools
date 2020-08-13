@@ -315,7 +315,7 @@ namespace GHttpHelper.Base
                 else
                 {
                     //GZIIP处理
-                    if (response.ContentEncoding != null && response.ContentEncoding.Equals("gzip", StringComparison.InvariantCultureIgnoreCase))
+                    if ("gzip".Equals(response.ContentEncoding, StringComparison.InvariantCultureIgnoreCase))
                     {
                         //开始读取流并设置编码方式
                         new GZipStream(response.GetResponseStream(), CompressionMode.Decompress).CopyTo(_stream, 10240);
