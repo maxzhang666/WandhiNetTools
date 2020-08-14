@@ -24,10 +24,14 @@ namespace GHttpHelper
             };
             if (headers != null)
             {
-                foreach (var item in headers.ToKeyValue())
+                foreach (var key in headers.AllKeys)
                 {
-                    http.Header.Add(item.Key, item.Value);
+                    http.Header.Add(key, headers[key]);
                 }
+                // foreach (var item in headers.ToKeyValue())
+                // {
+                //     http.Header.Add(item.Key, item.Value);
+                // }
             }
 
             var res = new HttpHelper().GetHtml(http);
