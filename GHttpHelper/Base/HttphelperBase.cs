@@ -344,10 +344,10 @@ namespace GHttpHelper.Base
         ///<param name="item">参数列表</param>
         private void SetRequest(HttpItem item)
         {
-            if (!string.IsNullOrWhiteSpace(item.CerPath))
+            if (item.IgnoreSecurity || (!string.IsNullOrWhiteSpace(item.CerPath)))
             {
                 //这一句一定要写在创建连接的前面。使用回调的方法进行证书验证。
-                ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(CheckValidationResult);
+                ServicePointManager.ServerCertificateValidationCallback = CheckValidationResult;
             }
 
             //初始化对像，并设置请求的URL地址
@@ -356,7 +356,7 @@ namespace GHttpHelper.Base
             {
                 _IPEndPoint = item.IPEndPoint;
                 //设置本地的出口ip和端口
-                request.ServicePoint.BindIPEndPointDelegate = new BindIPEndPoint(BindIPEndPointCallback);
+                request.ServicePoint.BindIPEndPointDelegate = BindIPEndPointCallback;
             }
 
             request.AutomaticDecompression = item.AutomaticDecompression;
