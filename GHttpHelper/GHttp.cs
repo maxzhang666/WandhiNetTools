@@ -28,6 +28,7 @@ namespace GHttpHelper
                 {
                     http.Header.Add(key, headers[key]);
                 }
+
                 // foreach (var item in headers.ToKeyValue())
                 // {
                 //     http.Header.Add(item.Key, item.Value);
@@ -176,9 +177,9 @@ namespace GHttpHelper
 
             if (Headers != null)
             {
-                foreach (var _item in Headers.ToKeyValue())
+                foreach (var key in Headers.AllKeys)
                 {
-                    item.Header.Add(_item.Key, _item.Value);
+                    item.Header.Add(key, Headers[key]);
                 }
             }
 

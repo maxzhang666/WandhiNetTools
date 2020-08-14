@@ -7,8 +7,8 @@
     <Copyright>Wandhi</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>1.0.7</Version>
-    <PackageReleaseNotes>添加忽略远程证书选项</PackageReleaseNotes>
-    <PackageVersion>1.0.12</PackageVersion>
+    <PackageReleaseNotes>bug fix</PackageReleaseNotes>
+    <PackageVersion>1.0.13</PackageVersion>
     <RepositoryUrl>https://github.com/maxzhang666/WandhiNetTools</RepositoryUrl>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>default</LangVersion>
