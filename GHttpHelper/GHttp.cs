@@ -20,7 +20,7 @@ namespace GHttpHelper
         {
             var http = new HttpItem()
             {
-                URL = url
+                URL = url, IgnoreSecurity = true
             };
             if (headers != null)
             {
@@ -28,15 +28,10 @@ namespace GHttpHelper
                 {
                     http.Header.Add(key, headers[key]);
                 }
-
-                // foreach (var item in headers.ToKeyValue())
-                // {
-                //     http.Header.Add(item.Key, item.Value);
-                // }
             }
 
             var res = new HttpHelper().GetHtml(http);
-            if (res.StatusCode == System.Net.HttpStatusCode.OK)
+            if (res.StatusCode == HttpStatusCode.OK)
             {
                 return res.Html;
             }
@@ -79,7 +74,7 @@ namespace GHttpHelper
                 Method = "POST",
                 PostDataType = Enum.PostDataType.String,
                 Postdata = GenPara(data),
-                ContentType = "application/x-www-form-urlencoded"
+                ContentType = "application/x-www-form-urlencoded", IgnoreSecurity = true
             };
             if (!string.IsNullOrEmpty(Referer))
             {
@@ -118,7 +113,7 @@ namespace GHttpHelper
                 URL = url,
                 Method = "POST",
                 PostDataType = Enum.PostDataType.String,
-                Postdata = data
+                Postdata = data,IgnoreSecurity = true
             };
             if (!string.IsNullOrEmpty(Referer))
             {
@@ -158,7 +153,7 @@ namespace GHttpHelper
                 URL = url,
                 Method = "POST",
                 PostDataType = Enum.PostDataType.String,
-                Postdata = postType == RequestType.Form ? GenPara(data) : JsonConvert.SerializeObject(data)
+                Postdata = postType == RequestType.Form ? GenPara(data) : JsonConvert.SerializeObject(data),IgnoreSecurity = true
             };
             if (postType == RequestType.Form)
             {
