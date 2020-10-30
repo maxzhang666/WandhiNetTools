@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+#if NETFRAMEWORK
 using System.Management;
+#endif
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
-
-namespace WandhiHelper.SystemHelp
+namespace WandhiHelper.SystemInfo
 {
-   public class SystemHelper
+    public class SystemHelper
     {
-
+#if NETFRAMEWORK
         /// <summary>
         /// 获得CPU编号
         /// </summary>
@@ -23,9 +20,10 @@ namespace WandhiHelper.SystemHelp
             var moc = mc.GetInstances();
             foreach (var o in moc)
             {
-                var mo = (ManagementObject)o;
+                var mo = (ManagementObject) o;
                 cpuid = mo.Properties["ProcessorId"].Value.ToString();
             }
+
             return cpuid;
         }
 
@@ -37,7 +35,7 @@ namespace WandhiHelper.SystemHelp
         {
             //这种模式在插入一个U盘后可能会有不同的结果，如插入我的手机时
             //这名话解决有多个物理盘时产生的问题，只取第一个物理硬盘
-          
+
             try
             {
                 ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PhysicalMedia");
@@ -45,16 +43,16 @@ namespace WandhiHelper.SystemHelp
                 foreach (ManagementObject mo in searcher.Get())
                 {
                     strHardDiskID = mo["SerialNumber"].ToString().Trim();
-                    
+
                     break;
                 }
+
                 return strHardDiskID;
             }
             catch
             {
                 return "";
             }
-
         }
 
 
@@ -64,13 +62,11 @@ namespace WandhiHelper.SystemHelp
         /// <returns></returns>
         public string GetDiskSize()
         {
-                
-      
-           ManagementClass mc = new ManagementClass("Win32_DiskDrive");
-           ManagementObjectCollection moj = mc.GetInstances();
-                foreach (ManagementObject m in moj)
-                {
-                    long.TryParse(m.Properties["Size"].Value.ToString(), out long size);
+            ManagementClass mc = new ManagementClass("Win32_DiskDrive");
+            ManagementObjectCollection moj = mc.GetInstances();
+            foreach (ManagementObject m in moj)
+            {
+                long.TryParse(m.Properties["Size"].Value.ToString(), out long size);
 
                 if (size > 0)
                 {
@@ -78,12 +74,10 @@ namespace WandhiHelper.SystemHelp
                     return size.ToString() + " G";
                 }
 
-                    return "-1";
-                }
                 return "-1";
-            
+            }
 
-
+            return "-1";
         }
 
         /// <summary>
@@ -97,11 +91,12 @@ namespace WandhiHelper.SystemHelp
             var moc = mc.GetInstances();
             foreach (var o in moc)
             {
-                var mo = (ManagementObject)o;
-                if (!(bool)mo["IPEnabled"]) continue;
+                var mo = (ManagementObject) o;
+                if (!(bool) mo["IPEnabled"]) continue;
                 mac = mo["MacAddress"].ToString();
                 break;
             }
+
             return mac;
         }
 
@@ -116,12 +111,13 @@ namespace WandhiHelper.SystemHelp
             var moc = mc.GetInstances();
             foreach (var o in moc)
             {
-                var mo = (ManagementObject)o;
-                if (!(bool)mo["IPEnabled"]) continue;
-                var ar = (Array)(mo.Properties["IpAddress"].Value);
+                var mo = (ManagementObject) o;
+                if (!(bool) mo["IPEnabled"]) continue;
+                var ar = (Array) (mo.Properties["IpAddress"].Value);
                 st = ar.GetValue(0).ToString();
                 break;
             }
+
             return st;
         }
 
@@ -155,9 +151,10 @@ namespace WandhiHelper.SystemHelp
             var moc = mc.GetInstances();
             foreach (var o in moc)
             {
-                var mo = (ManagementObject)o;
+                var mo = (ManagementObject) o;
                 st = mo["SystemType"].ToString();
             }
+
             return st;
         }
 
@@ -172,9 +169,10 @@ namespace WandhiHelper.SystemHelp
             var moc = mc.GetInstances();
             foreach (var o in moc)
             {
-                var mo = (ManagementObject)o;
+                var mo = (ManagementObject) o;
                 st = mo["TotalPhysicalMemory"].ToString();
             }
+
             return st;
         }
 
@@ -188,9 +186,10 @@ namespace WandhiHelper.SystemHelp
             var mos = new ManagementObjectSearcher("Select * from Win32_VideoController");
             foreach (var o in mos.Get())
             {
-                var mo = (ManagementObject)o;
+                var mo = (ManagementObject) o;
                 st = mo["PNPDeviceID"].ToString();
             }
+
             return st;
         }
 
@@ -204,9 +203,10 @@ namespace WandhiHelper.SystemHelp
             var mos = new ManagementObjectSearcher("Select * from Win32_SoundDevice");
             foreach (var o in mos.Get())
             {
-                var mo = (ManagementObject)o;
+                var mo = (ManagementObject) o;
                 st = mo["PNPDeviceID"].ToString();
             }
+
             return st;
         }
 
@@ -220,9 +220,10 @@ namespace WandhiHelper.SystemHelp
             var mos = new ManagementObjectSearcher("Select * from Win32_Processor");
             foreach (var o in mos.Get())
             {
-                var mo = (ManagementObject)o;
+                var mo = (ManagementObject) o;
                 st = mo["Version"].ToString();
             }
+
             return st;
         }
 
@@ -236,9 +237,10 @@ namespace WandhiHelper.SystemHelp
             var driveId = new ManagementObjectSearcher("Select * from Win32_Processor");
             foreach (var o in driveId.Get())
             {
-                var mo = (ManagementObject)o;
+                var mo = (ManagementObject) o;
                 st = mo["Name"].ToString();
             }
+
             return st;
         }
 
@@ -252,9 +254,10 @@ namespace WandhiHelper.SystemHelp
             var mos = new ManagementObjectSearcher("Select * from Win32_Processor");
             foreach (var o in mos.Get())
             {
-                var mo = (ManagementObject)o;
+                var mo = (ManagementObject) o;
                 st = mo["Manufacturer"].ToString();
             }
+
             return st;
         }
 
@@ -282,9 +285,10 @@ namespace WandhiHelper.SystemHelp
             var mos = new ManagementObjectSearcher("Select * from Win32_BaseBoard");
             foreach (var o in mos.Get())
             {
-                var mo = (ManagementObject)o;
+                var mo = (ManagementObject) o;
                 st = mo["SerialNumber"].ToString();
             }
+
             return st;
         }
 
@@ -298,16 +302,16 @@ namespace WandhiHelper.SystemHelp
             var mos = new ManagementObjectSearcher("Select * from Win32_BaseBoard");
             foreach (var o in mos.Get())
             {
-                var mo = (ManagementObject)o;
+                var mo = (ManagementObject) o;
                 st = mo["Product"].ToString();
             }
+
             return st;
         }
 
 
         public string GetOsVersion()
         {
-
             string strQuery = "select *from win32_OperatingSystem";
             SelectQuery queryOS = new SelectQuery(strQuery);
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(queryOS);
@@ -319,13 +323,12 @@ namespace WandhiHelper.SystemHelp
                 strClient = os["Caption"].ToString();
                 break;
                 //Console.WriteLine("操作系统标题\t{0}", os["Caption"]);
-               // Console.WriteLine("操作系统序列号\t{0}", os["SerialNumber"]);
+                // Console.WriteLine("操作系统序列号\t{0}", os["SerialNumber"]);
                 //Console.WriteLine("操作系统路径\t{0}", os["SystemDirectory"]);
             }
 
             return strClient;
         }
-
 
 
         //判断本机是否联网
@@ -334,8 +337,8 @@ namespace WandhiHelper.SystemHelp
         private extern static bool InternetGetConnectedState(out int conState, int reder);
 
 
-
         #region 关机 重启 注销
+
         [DllImport("user32.dll", EntryPoint = "ExitWindowsEx", CharSet = CharSet.Ansi)]
         private static extern int ExitWindowsEx(int uFlags, int dwReserved);
 
@@ -347,7 +350,6 @@ namespace WandhiHelper.SystemHelp
         {
             int n = 0;
             return InternetGetConnectedState(out n, 0);
-            
         }
 
         /// <summary>
@@ -366,14 +368,14 @@ namespace WandhiHelper.SystemHelp
         {
             //关机
             System.Diagnostics.Process myProcess = new System.Diagnostics.Process();
-            myProcess.StartInfo.FileName = "cmd.exe";//启动cmd命令
-            myProcess.StartInfo.UseShellExecute = false;//是否使用系统外壳程序启动进程
-            myProcess.StartInfo.RedirectStandardInput = true;//是否从流中读取
-            myProcess.StartInfo.RedirectStandardOutput = true;//是否写入流
-            myProcess.StartInfo.RedirectStandardError = true;//是否将错误信息写入流
-            myProcess.StartInfo.CreateNoWindow = true;//是否在新窗口中启动进程
-            myProcess.Start();//启动进程
-            myProcess.StandardInput.WriteLine("shutdown -s -t 0");//执行关机命令
+            myProcess.StartInfo.FileName = "cmd.exe"; //启动cmd命令
+            myProcess.StartInfo.UseShellExecute = false; //是否使用系统外壳程序启动进程
+            myProcess.StartInfo.RedirectStandardInput = true; //是否从流中读取
+            myProcess.StartInfo.RedirectStandardOutput = true; //是否写入流
+            myProcess.StartInfo.RedirectStandardError = true; //是否将错误信息写入流
+            myProcess.StartInfo.CreateNoWindow = true; //是否在新窗口中启动进程
+            myProcess.Start(); //启动进程
+            myProcess.StandardInput.WriteLine("shutdown -s -t 0"); //执行关机命令
         }
 
         /// <summary>
@@ -383,21 +385,21 @@ namespace WandhiHelper.SystemHelp
         {
             //重启
             System.Diagnostics.Process myProcess = new System.Diagnostics.Process();
-            myProcess.StartInfo.FileName = "cmd.exe";//启动cmd命令
-            myProcess.StartInfo.UseShellExecute = false;//是否使用系统外壳程序启动进程
-            myProcess.StartInfo.RedirectStandardInput = true;//是否从流中读取
-            myProcess.StartInfo.RedirectStandardOutput = true;//是否写入流
-            myProcess.StartInfo.RedirectStandardError = true;//是否将错误信息写入流
-            myProcess.StartInfo.CreateNoWindow = true;//是否在新窗口中启动进程
-            myProcess.Start();//启动进程
-            myProcess.StandardInput.WriteLine("shutdown -r -t 0");//执行重启计算机命令
+            myProcess.StartInfo.FileName = "cmd.exe"; //启动cmd命令
+            myProcess.StartInfo.UseShellExecute = false; //是否使用系统外壳程序启动进程
+            myProcess.StartInfo.RedirectStandardInput = true; //是否从流中读取
+            myProcess.StartInfo.RedirectStandardOutput = true; //是否写入流
+            myProcess.StartInfo.RedirectStandardError = true; //是否将错误信息写入流
+            myProcess.StartInfo.CreateNoWindow = true; //是否在新窗口中启动进程
+            myProcess.Start(); //启动进程
+            myProcess.StandardInput.WriteLine("shutdown -r -t 0"); //执行重启计算机命令
         }
-
 
         #endregion
 
 
         #region 更改分辨率
+
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         static extern int ChangeDisplaySettings([In] ref DEVMODE lpDevMode, int dwFlags);
 
@@ -418,8 +420,10 @@ namespace WandhiHelper.SystemHelp
             public const int DM_BITSPERPEL = 262144;
             private const int CCHDEVICENAME = 32;
             private const int CCHFORMNAME = 32;
+
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = CCHDEVICENAME)]
             public string dmDeviceName;
+
             public short dmSpecVersion;
             public short dmDriverVersion;
             public short dmSize;
@@ -434,8 +438,10 @@ namespace WandhiHelper.SystemHelp
             public short dmYResolution;
             public short dmTTOption;
             public short dmCollate;
+
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = CCHFORMNAME)]
             public string dmFormName;
+
             public short dmLogPixels;
             public int dmBitsPerPel;
             public int dmPelsWidth;
@@ -459,14 +465,14 @@ namespace WandhiHelper.SystemHelp
         /// <param name="width">宽度</param>
         /// <param name="height">高度</param>
         /// <param name="displayFrequency">刷新频率 60，75，85，100</param>
-        public static void ChangeDisplaySettings(int width,int height,int displayFrequency=60)
+        public static void ChangeDisplaySettings(int width, int height, int displayFrequency = 60)
         {
             long RetVal = 0;
             DEVMODE dm = new DEVMODE();
-            dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE));
-            dm.dmPelsWidth = width;//宽
-            dm.dmPelsHeight = height;//高
-            dm.dmDisplayFrequency = displayFrequency;//刷新率
+            dm.dmSize = (short) Marshal.SizeOf(typeof(DEVMODE));
+            dm.dmPelsWidth = width; //宽
+            dm.dmPelsHeight = height; //高
+            dm.dmDisplayFrequency = displayFrequency; //刷新率
             dm.dmFields = DEVMODE.DM_PELSWIDTH | DEVMODE.DM_PELSHEIGHT | DEVMODE.DM_DISPLAYFREQUENCY | DEVMODE.DM_BITSPERPEL;
             RetVal = ChangeDisplaySettings(ref dm, 0);
         }
@@ -497,11 +503,11 @@ namespace WandhiHelper.SystemHelp
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-             
             }
+
             return result;
         }
 
-
+#endif
     }
 }
