@@ -9,12 +9,13 @@ using WandhiHelper.Extension;
 
 namespace GHttpHelper
 {
-    public class Http
+    public class GHttp
     {
         /// <summary>
         /// 请求
         /// </summary>
         /// <param name="url"></param>
+        /// <param name="headers"></param>
         /// <returns></returns>
         public static string Get(string url, WebHeaderCollection headers = null)
         {
@@ -28,12 +29,7 @@ namespace GHttpHelper
             }
 
             var res = new HttpHelper().GetHtml(http);
-            if (res.StatusCode == HttpStatusCode.OK)
-            {
-                return res.Html;
-            }
-
-            return "";
+            return res.StatusCode == HttpStatusCode.OK ? res.Html : "";
         }
 
         /// <summary>
@@ -41,6 +37,7 @@ namespace GHttpHelper
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="url"></param>
+        /// <param name="headers"></param>
         /// <returns></returns>
         public static T Get<T>(string url, WebHeaderCollection headers = null)
         {
@@ -55,14 +52,14 @@ namespace GHttpHelper
         /// <param name="url"></param>
         /// <param name="data">提交数据</param>
         /// <param name="postType">提交类型</param>
-        /// <param name="Referer"></param>
-        /// <param name="Encoding">编码方式</param>
+        /// <param name="referer"></param>
+        /// <param name="encoding">编码方式</param>
         /// <returns></returns>
-        private static string Post(string url, object data, RequestType postType = RequestType.Form, string Referer = "", Encoding Encoding = null)
+        private static string Post(string url, object data, RequestType postType = RequestType.Form, string referer = "", Encoding encoding = null)
         {
             if (postType == RequestType.Json)
             {
-                return PostJson(url, JsonConvert.SerializeObject(data), Referer, Encoding);
+                return PostJson(url, JsonConvert.SerializeObject(data), referer, encoding);
             }
 
             var item = new HttpItem
@@ -74,14 +71,14 @@ namespace GHttpHelper
                 ContentType = "application/x-www-form-urlencoded",
                 IgnoreSecurity = true
             };
-            if (!string.IsNullOrEmpty(Referer))
+            if (!string.IsNullOrEmpty(referer))
             {
-                item.Referer = Referer;
+                item.Referer = referer;
             }
 
-            if (Encoding != null)
+            if (encoding != null)
             {
-                item.PostEncoding = Encoding;
+                item.PostEncoding = encoding;
             }
 
             var res = new HttpHelper().GetHtml(item);
@@ -100,11 +97,10 @@ namespace GHttpHelper
         /// </summary>
         /// <param name="url"></param>
         /// <param name="data">提交数据</param>
-        /// <param name="postType">提交类型</param>
-        /// <param name="Referer"></param>
-        /// <param name="Encoding">编码方式</param>
+        /// <param name="referer"></param>
+        /// <param name="encoding">编码方式</param>
         /// <returns></returns>
-        public static string PostJson(string url, string data, string Referer = "", Encoding Encoding = null)
+        public static string PostJson(string url, string data, string referer = "", Encoding encoding = null)
         {
             var item = new HttpItem
             {
@@ -114,14 +110,14 @@ namespace GHttpHelper
                 Postdata = data,
                 IgnoreSecurity = true
             };
-            if (!string.IsNullOrEmpty(Referer))
+            if (!string.IsNullOrEmpty(referer))
             {
-                item.Referer = Referer;
+                item.Referer = referer;
             }
 
-            if (Encoding != null)
+            if (encoding != null)
             {
-                item.PostEncoding = Encoding;
+                item.PostEncoding = encoding;
             }
 
             item.ContentType = "application/json";
@@ -130,10 +126,7 @@ namespace GHttpHelper
             {
                 return res.Html;
             }
-            else
-            {
-                throw new Exception($"请求异常:{res.StatusCode}") {Source = JsonConvert.SerializeObject(res)};
-            }
+            throw new Exception($"请求异常:{res.StatusCode}") {Source = JsonConvert.SerializeObject(res)};
         }
 
         /// <summary>
@@ -142,11 +135,11 @@ namespace GHttpHelper
         /// <param name="url"></param>
         /// <param name="data"></param>
         /// <param name="postType"></param>
-        /// <param name="Headers"></param>
-        /// <param name="Referer"></param>
-        /// <param name="Encoding"></param>
+        /// <param name="headers"></param>
+        /// <param name="referer"></param>
+        /// <param name="encoding"></param>
         /// <returns></returns>
-        private static string Post(string url, object data, RequestType postType = RequestType.Form, WebHeaderCollection Headers = null, string Referer = "", Encoding Encoding = null)
+        private static string Post(string url, object data, RequestType postType = RequestType.Form, WebHeaderCollection headers = null, string referer = "", Encoding encoding = null)
         {
             var item = new HttpItem
             {
@@ -164,21 +157,21 @@ namespace GHttpHelper
                 _ => item.ContentType
             };
 
-            if (!string.IsNullOrEmpty(Referer))
+            if (!string.IsNullOrEmpty(referer))
             {
-                item.Referer = Referer;
+                item.Referer = referer;
             }
 
-            if (Encoding != null)
+            if (encoding != null)
             {
-                item.PostEncoding = Encoding;
+                item.PostEncoding = encoding;
             }
 
-            if (Headers != null)
+            if (headers != null)
             {
-                foreach (var key in Headers.AllKeys)
+                foreach (var key in headers.AllKeys)
                 {
-                    item.Header.Add(key, Headers[key]);
+                    item.Header.Add(key, headers[key]);
                 }
             }
 
@@ -186,16 +179,16 @@ namespace GHttpHelper
             return res.StatusCode == System.Net.HttpStatusCode.OK ? res.Html : $"请求异常:{res.StatusCode},Source:{JsonConvert.SerializeObject(res)}";
         }
 
-        public static T Post<T>(string url, object data, RequestType postType = RequestType.Form, string Referer = "", Encoding Encoding = null)
+        public static T Post<T>(string url, object data, RequestType postType = RequestType.Form, string referer = "", Encoding encoding = null)
         {
-            var res = Post(url, data, postType, Referer, Encoding);
+            var res = Post(url, data, postType, referer, encoding);
             var obj = JsonConvert.DeserializeObject<T>(res);
             return obj;
         }
 
-        public static T Post<T>(string url, object data, RequestType postType = RequestType.Form, WebHeaderCollection Headers = null, string Referer = "", Encoding Encoding = null)
+        public static T Post<T>(string url, object data, RequestType postType = RequestType.Form, WebHeaderCollection headers = null, string referer = "", Encoding encoding = null)
         {
-            var res = Post(url, data, postType, Headers, Referer, Encoding);
+            var res = Post(url, data, postType, headers, referer, encoding);
             var obj = JsonConvert.DeserializeObject<T>(res);
             return obj;
         }
