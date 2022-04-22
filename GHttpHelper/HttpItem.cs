@@ -305,27 +305,16 @@ namespace GHttpHelper
 
         #region link
 
-        private Boolean allowautoredirect = false;
-
         /// <summary>
         /// 支持跳转页面，查询结果将是跳转后的页面，默认是不跳转
         /// </summary>
-        public Boolean Allowautoredirect
-        {
-            get { return allowautoredirect; }
-            set { allowautoredirect = value; }
-        }
+        public Boolean Allowautoredirect = false;
 
-        private int connectionlimit = 1024;
 
         /// <summary>
         /// 最大连接数
         /// </summary>
-        public int Connectionlimit
-        {
-            get { return connectionlimit; }
-            set { connectionlimit = value; }
-        }
+        public int Connectionlimit = 1024;
 
         #endregion
 
