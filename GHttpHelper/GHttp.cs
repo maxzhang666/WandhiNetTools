@@ -131,8 +131,9 @@ namespace GHttpHelper
             throw new Exception($"请求异常:{res.StatusCode}") { Source = JsonConvert.SerializeObject(res) };
         }
 
+
         /// <summary>
-        /// Post
+        /// 
         /// </summary>
         /// <param name="url"></param>
         /// <param name="data"></param>
@@ -140,6 +141,7 @@ namespace GHttpHelper
         /// <param name="headers"></param>
         /// <param name="referer"></param>
         /// <param name="encoding"></param>
+        /// <param name="timeount"></param>
         /// <returns></returns>
         private static string Post(string url, object data, RequestType postType = RequestType.Form, WebHeaderCollection headers = null, string referer = "", Encoding encoding = null, int timeount = 100000)
         {
@@ -189,6 +191,18 @@ namespace GHttpHelper
             return obj;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="data"></param>
+        /// <param name="postType"></param>
+        /// <param name="headers"></param>
+        /// <param name="referer"></param>
+        /// <param name="encoding"></param>
+        /// <param name="timeout">超时，毫秒</param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static T Post<T>(string url, object data, RequestType postType = RequestType.Form, WebHeaderCollection headers = null, string referer = "", Encoding encoding = null, int timeout = 100000)
         {
             var res = Post(url, data, postType, headers, referer, encoding, timeout);
