@@ -7,8 +7,8 @@
     <Copyright>Wandhi</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>1.0.7</Version>
-    <PackageReleaseNotes>bug post method lost head</PackageReleaseNotes>
-    <PackageVersion>1.0.16</PackageVersion>
+    <PackageReleaseNotes>post添加超时时间</PackageReleaseNotes>
+    <PackageVersion>1.0.17</PackageVersion>
     <RepositoryUrl>https://github.com/maxzhang666/WandhiNetTools</RepositoryUrl>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>default</LangVersion>
