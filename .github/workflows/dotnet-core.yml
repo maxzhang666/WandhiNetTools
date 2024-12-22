@@ -3,8 +3,8 @@ name: .NET Core
 on:
   push:
     branches: [ master ]
-    paths:
-      - 'GHttpHelper/**'
+#    paths:
+#      - 'GHttpHelper/**'
   pull_request:
     branches: [ master ]
 
