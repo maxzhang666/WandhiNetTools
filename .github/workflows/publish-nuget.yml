@@ -17,13 +17,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Build and Publish in Docker
-        uses: docker://mcr.microsoft.com/dotnet/sdk:2.0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
         with:
-          args: |
-            bash -c "
-            apt-get update && apt-get install -y libicu-dev &&
-            dotnet restore ./GHttpHelper/GHttpHelper.csproj &&
-            dotnet pack ./GHttpHelper/GHttpHelper.csproj --configuration Release --output ./nupkgs &&
-            dotnet nuget push ./nupkgs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
-            "
+          dotnet-version: '6.0.x'  # 使用最新的 .NET 版本
+
+      - name: Restore dependencies
+        run: dotnet restore ./GHttpHelper/GHttpHelper.csproj
+
+      - name: Pack NuGet package
+        run: dotnet pack ./GHttpHelper/GHttpHelper.csproj --configuration Release --output ./nupkgs
+
+      - name: Publish NuGet package
+        run: dotnet nuget push ./nupkgs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
