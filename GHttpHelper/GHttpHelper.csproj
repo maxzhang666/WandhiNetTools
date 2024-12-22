@@ -17,7 +17,7 @@
     <PackageLicenseUrl></PackageLicenseUrl>
     <RepositoryType>Github</RepositoryType>
     <PackageTags>Net</PackageTags>
-    <InvariantGlobalization>true</InvariantGlobalization>
+<!--    <InvariantGlobalization>true</InvariantGlobalization>-->
 
   </PropertyGroup>
 

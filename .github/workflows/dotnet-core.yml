@@ -15,11 +15,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: sudo apt-get install -y libssl-dev
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.301
-      - name: Install dependencies
+      - name: Install .NET dependencies
         run: DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true dotnet restore
         working-directory: ./GHttpHelper/
       - name: Build
