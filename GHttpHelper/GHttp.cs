@@ -19,6 +19,12 @@ namespace GHttpHelper
         /// <returns></returns>
         public static GResult Get(string url, WebHeaderCollection headers = null)
         {
+            var res = _Get(url, headers);
+            return (GResult)res;
+        }
+
+        private static HttpResult _Get(string url, WebHeaderCollection headers = null)
+        {
             var http = new HttpItem() { URL = url, IgnoreSecurity = true };
             if (headers != null)
             {
@@ -29,8 +35,9 @@ namespace GHttpHelper
             }
 
             var res = new HttpHelper().GetHtml(http);
-            return (GResult)res;
+            return res;
         }
+
 
         /// <summary>
         /// get
@@ -41,13 +48,13 @@ namespace GHttpHelper
         /// <returns></returns>
         public static GResult<T> Get<T>(string url, WebHeaderCollection headers = null) where T : class
         {
-            HttpResult httpResult = Get(url, headers);
+            var httpResult = _Get(url, headers);
             var result = (GResult<T>)httpResult;
             result.Data = DeserializeObject<T>(httpResult.Html);
             return result;
         }
 
-        
+
         /// <summary>
         /// Post
         /// </summary>
