@@ -23,7 +23,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
     <DefineConstants>DEBUG;TRACE;NET45</DefineConstants>
-    <InvariantGlobalization>true</InvariantGlobalization>
+<!--    <InvariantGlobalization>true</InvariantGlobalization>-->
 
   </PropertyGroup>
 
