@@ -13,12 +13,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:      
+    steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set globalization invariant mode
-        run: echo "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1" >> $GITHUB_ENV
+      - name: Install ICU
+        run: sudo apt-get update && sudo apt-get install -y libicu-dev
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
