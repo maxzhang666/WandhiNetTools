@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>GHttpHelper</id>
+        <version>2.0.0</version>
+        <authors>MaxZhang</authors>
+        <owners>MaxZhang</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>自用的一些网络工具类</description>
+        <tags>Wandhi</tags>
+    </metadata>
+</package>

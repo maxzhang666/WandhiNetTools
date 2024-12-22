@@ -1,0 +1,28 @@
+name: Build and Publish NuGet Package
+
+on:
+  push:
+    branches:
+      - main  # 触发条件，您可以根据需要修改
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '2.0.x'  # 使用 .NET Standard 2.0
+
+      - name: Restore dependencies
+        run: dotnet restore ./GHttpHelper/GHttpHelper.csproj
+
+      - name: Pack NuGet package
+        run: dotnet pack ./GHttpHelper/GHttpHelper.csproj --configuration Release --output ./nupkgs
+
+      - name: Publish NuGet package
+        run: dotnet nuget push ./nupkgs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
