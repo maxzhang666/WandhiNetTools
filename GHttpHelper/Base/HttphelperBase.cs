@@ -407,7 +407,11 @@ namespace GHttpHelper.Base
             }
 
             //设置最大连接
-            if (item.Connectionlimit > 0) request.ServicePoint.ConnectionLimit = item.Connectionlimit;
+            if (item.Connectionlimit > 0)
+            {
+                request.ServicePoint.ConnectionLimit = item.Connectionlimit;
+            }
+
             //当出现“请求被中止: 未能创建 SSL/TLS 安全通道”时需要配置此属性 
             if (item.SecurityProtocol > 0)
             {

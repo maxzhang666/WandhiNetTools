@@ -2,8 +2,11 @@ name: Build and Publish NuGet Package
 
 on:
   push:
-    branches:
-      - main  # 触发条件，您可以根据需要修改
+    branches: [ master ]
+    paths:
+      - 'GHttpHelper/**'
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
