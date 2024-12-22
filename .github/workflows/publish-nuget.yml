@@ -25,6 +25,9 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore ./GHttpHelper/GHttpHelper.csproj
 
+      - name: Build project
+        run: dotnet build ./GHttpHelper/GHttpHelper.csproj --configuration Release
+
       - name: Pack NuGet package
         run: dotnet pack ./GHttpHelper/GHttpHelper.csproj --configuration Release --output ./nupkgs
 

@@ -17,14 +17,10 @@
     <PackageLicenseUrl></PackageLicenseUrl>
     <RepositoryType>Github</RepositoryType>
     <PackageTags>Net</PackageTags>
-<!--    <InvariantGlobalization>true</InvariantGlobalization>-->
-
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
     <DefineConstants>DEBUG;TRACE;NET45</DefineConstants>
-<!--    <InvariantGlobalization>true</InvariantGlobalization>-->
-
   </PropertyGroup>
 
   <ItemGroup>
