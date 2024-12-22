@@ -8,5 +8,6 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>自用的一些网络工具类</description>
         <tags>Wandhi</tags>
+        <readme>./readme.md</readme>
     </metadata>
 </package>
