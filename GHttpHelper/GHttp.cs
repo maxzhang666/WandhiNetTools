@@ -17,7 +17,7 @@ namespace GHttpHelper
         /// <param name="url"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public static string Get(string url, WebHeaderCollection headers = null)
+        public static GResult Get(string url, WebHeaderCollection headers = null)
         {
             var http = new HttpItem() { URL = url, IgnoreSecurity = true };
             if (headers != null)
@@ -29,7 +29,7 @@ namespace GHttpHelper
             }
 
             var res = new HttpHelper().GetHtml(http);
-            return res.StatusCode == HttpStatusCode.OK ? res.Html : "";
+            return (GResult)res;
         }
 
         /// <summary>
@@ -39,11 +39,12 @@ namespace GHttpHelper
         /// <param name="url"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public static T Get<T>(string url, WebHeaderCollection headers = null)
+        public static GResult<T> Get<T>(string url, WebHeaderCollection headers = null) where T : class
         {
-            var res = Get(url, headers);
-            var obj = JsonConvert.DeserializeObject<T>(res);
-            return obj;
+            HttpResult httpResult = Get(url, headers);
+            var result = (GResult<T>)httpResult;
+            result.Data = DeserializeObject<T>(httpResult.Html);
+            return result;
         }
 
         /// <summary>
@@ -55,12 +56,13 @@ namespace GHttpHelper
         /// <param name="referer"></param>
         /// <param name="encoding">编码方式</param>
         /// <returns></returns>
-        private static string Post(string url, object data, RequestType postType = RequestType.Form, string referer = "", Encoding encoding = null, int timeount = 100000)
+        private static HttpResult Post(string url, object data, RequestType postType = RequestType.Form,
+            string referer = "", Encoding encoding = null, int timeount = 100000)
         {
-            if (postType == RequestType.Json)
-            {
-                return PostJson(url, JsonConvert.SerializeObject(data), referer, encoding);
-            }
+            // if (postType == RequestType.Json)
+            // {
+            //     return PostJson(url, JsonConvert.SerializeObject(data), referer, encoding);
+            // }
 
             var item = new HttpItem
             {
@@ -83,14 +85,7 @@ namespace GHttpHelper
             }
 
             var res = new HttpHelper().GetHtml(item);
-            if (res.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return res.Html;
-            }
-            else
-            {
-                throw new Exception($"请求异常:{res.StatusCode}") { Source = JsonConvert.SerializeObject(res) };
-            }
+            return res;
         }
 
         /// <summary>
@@ -101,7 +96,7 @@ namespace GHttpHelper
         /// <param name="referer"></param>
         /// <param name="encoding">编码方式</param>
         /// <returns></returns>
-        public static string PostJson(string url, string data, string referer = "", Encoding encoding = null)
+        public static GResult PostJson(string url, string data, string referer = "", Encoding encoding = null)
         {
             var item = new HttpItem
             {
@@ -123,12 +118,7 @@ namespace GHttpHelper
 
             item.ContentType = "application/json";
             var res = new HttpHelper().GetHtml(item);
-            if (res.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return res.Html;
-            }
-
-            throw new Exception($"请求异常:{res.StatusCode}") { Source = JsonConvert.SerializeObject(res) };
+            return (GResult)res;
         }
 
 
@@ -143,7 +133,8 @@ namespace GHttpHelper
         /// <param name="encoding"></param>
         /// <param name="timeount"></param>
         /// <returns></returns>
-        private static string Post(string url, object data, RequestType postType = RequestType.Form, WebHeaderCollection headers = null, string referer = "", Encoding encoding = null, int timeount = 100000)
+        private static HttpResult Post(string url, object data, RequestType postType = RequestType.Form,
+            WebHeaderCollection headers = null, string referer = "", Encoding encoding = null, int timeount = 100000)
         {
             var item = new HttpItem
             {
@@ -181,14 +172,17 @@ namespace GHttpHelper
             }
 
             var res = new HttpHelper().GetHtml(item);
-            return res.StatusCode == System.Net.HttpStatusCode.OK ? res.Html : $"请求异常:{res.StatusCode},Source:{JsonConvert.SerializeObject(res)}";
+            return res;
         }
 
-        public static T Post<T>(string url, object data, RequestType postType = RequestType.Form, string referer = "", Encoding encoding = null)
+        public static GResult<T> Post<T>(string url, object data, RequestType postType = RequestType.Form,
+            string referer = "",
+            Encoding encoding = null) where T : class
         {
-            var res = Post(url, data, postType, referer, encoding);
-            var obj = JsonConvert.DeserializeObject<T>(res);
-            return obj;
+            var httpResult = Post(url, data, postType, referer, encoding);
+            var res = (GResult<T>)httpResult;
+            res.Data = DeserializeObject<T>(res.Html);
+            return res;
         }
 
         /// <summary>
@@ -203,11 +197,15 @@ namespace GHttpHelper
         /// <param name="timeout">超时，毫秒</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T Post<T>(string url, object data, RequestType postType = RequestType.Form, WebHeaderCollection headers = null, string referer = "", Encoding encoding = null, int timeout = 100000)
+        public static GResult<T> Post<T>(string url, object data, RequestType postType = RequestType.Form,
+            WebHeaderCollection headers = null, string referer = "", Encoding encoding = null, int timeout = 100000)
+            where T : class
         {
-            var res = Post(url, data, postType, headers, referer, encoding, timeout);
-            var obj = JsonConvert.DeserializeObject<T>(res);
-            return obj;
+            var httpResult = Post(url, data, postType, headers, referer, encoding, timeout);
+            var obj = DeserializeObject<T>(httpResult.Html);
+            var res = (GResult<T>)httpResult;
+            res.Data = obj;
+            return res;
         }
 
         /// <summary>
@@ -218,8 +216,17 @@ namespace GHttpHelper
         private static string GenPara(object data)
         {
             var keyValues = data.ToKeyValue();
-            var res = string.Join("&", keyValues.Select(a => $"{HttpUtility.UrlEncode(a.Key)}={HttpUtility.UrlEncode(a.Value)}"));
+            var res = string.Join("&",
+                keyValues.Select(a => $"{HttpUtility.UrlEncode(a.Key)}={HttpUtility.UrlEncode(a.Value)}"));
             return res;
+        }
+
+        private static T DeserializeObject<T>(string str) where T : class
+        {
+            return JsonConvert.DeserializeObject<T>(str, new JsonSerializerSettings
+            {
+                Error = (sender, args) => { args.ErrorContext.Handled = true; }
+            });
         }
     }
 
