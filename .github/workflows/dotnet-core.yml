@@ -14,22 +14,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.301
-    - name: Install dependencies
-      run: dotnet restore
-      working-directory: ./GHttpHelper/
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
-      working-directory: ./GHttpHelper/
-    - name: Publish
-      uses: brandedoutcast/publish-nuget@v2.5.5
-      with:
-        PROJECT_FILE_PATH: GHttpHelper/GHttpHelper.csproj
-        PACKAGE_NAME: GHttpHelper
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-        VERSION_FILE_PATH: GHttpHelper/GHttpHelper.csproj
-        VERSION_REGEX: ^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.301
+      - name: Install dependencies
+        run: DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true dotnet restore
+        working-directory: ./GHttpHelper/
+      - name: Build
+        run: DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true dotnet build --configuration Release --no-restore
+        working-directory: ./GHttpHelper/
+      - name: Publish
+        uses: brandedoutcast/publish-nuget@v2.5.5
+        with:
+          PROJECT_FILE_PATH: GHttpHelper/GHttpHelper.csproj
+          PACKAGE_NAME: GHttpHelper
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+          VERSION_FILE_PATH: GHttpHelper/GHttpHelper.csproj
+          VERSION_REGEX: ^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$
