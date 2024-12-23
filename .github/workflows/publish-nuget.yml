@@ -4,6 +4,7 @@ on:
   push:
     branches: [ master ]
     paths:
+      - 'GHttpHelper/GHttpHelper.csproj'
       - 'GHttpHelper/.nuspec'
       - '.github/workflows/publish-nuget.yml'
   pull_request:
