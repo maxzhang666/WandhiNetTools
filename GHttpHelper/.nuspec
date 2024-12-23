@@ -7,6 +7,8 @@
         <owners>MaxZhang</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>自用的一些网络工具类</description>
+        <repository>https://github.com/maxzhang666/WandhiNetTools</repository>
+        <projectUrl>https://github.com/maxzhang666/WandhiNetTools</projectUrl>
         <tags>Wandhi</tags>
         <readme>./readme.md</readme>
     </metadata>
