@@ -20,7 +20,7 @@ namespace GHttpHelper
         public static GResult Get(string url, WebHeaderCollection headers = null)
         {
             var res = _Get(url, headers);
-            return (GResult)res;
+            return new GResult(res);
         }
 
         private static HttpResult _Get(string url, WebHeaderCollection headers = null)
@@ -49,8 +49,7 @@ namespace GHttpHelper
         public static GResult<T> Get<T>(string url, WebHeaderCollection headers = null) where T : class
         {
             var httpResult = _Get(url, headers);
-            var result = (GResult<T>)httpResult;
-            result.Data = DeserializeObject<T>(httpResult.Html);
+            var result = new GResult<T>(httpResult);
             return result;
         }
 
@@ -126,7 +125,7 @@ namespace GHttpHelper
 
             item.ContentType = "application/json";
             var res = new HttpHelper().GetHtml(item);
-            return (GResult)res;
+            return new GResult(res);
         }
 
 
@@ -188,8 +187,7 @@ namespace GHttpHelper
             Encoding encoding = null) where T : class
         {
             var httpResult = Post(url, data, postType, referer, encoding);
-            var res = (GResult<T>)httpResult;
-            res.Data = DeserializeObject<T>(res.Html);
+            var res = new GResult<T>(httpResult);
             return res;
         }
 
@@ -210,9 +208,7 @@ namespace GHttpHelper
             where T : class
         {
             var httpResult = Post(url, data, postType, headers, referer, encoding, timeout);
-            var obj = DeserializeObject<T>(httpResult.Html);
-            var res = (GResult<T>)httpResult;
-            res.Data = obj;
+            var res = new GResult<T>(httpResult);
             return res;
         }
 
