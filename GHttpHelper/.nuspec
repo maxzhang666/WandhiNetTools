@@ -12,4 +12,7 @@
         <tags>Wandhi</tags>
         <readme>./readme.md</readme>
     </metadata>
+    <files>
+        <file src="./readme.md" target="docs\" />
+    </files>
 </package>
