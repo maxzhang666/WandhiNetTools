@@ -21,6 +21,7 @@ namespace GHttpHelper.BaseBll
         /// <returns>返回HttpResult类型</returns>
         internal HttpResult GetHtml(HttpItem item)
         {
+            //如果允许自动重定向，并且有Cookie，则进行自动重定向
             if (item.Allowautoredirect && item.AutoRedirectCookie)
             {
                 HttpResult result = null;

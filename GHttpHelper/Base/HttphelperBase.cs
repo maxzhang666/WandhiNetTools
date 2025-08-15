@@ -46,8 +46,10 @@ namespace GHttpHelper.Base
         internal HttpResult GetHtml(HttpItem item)
         {
             //返回参数
-            HttpResult result = new HttpResult();
-            result.item = item;
+            var result = new HttpResult
+            {
+                item = item
+            };
             try
             {
                 //准备参数
@@ -56,13 +58,13 @@ namespace GHttpHelper.Base
             catch (Exception ex)
             {
                 //配置参数时出错
-                return new HttpResult() {Cookie = string.Empty, Header = null, Html = ex.Message, StatusDescription = "配置参数时出错：" + ex.Message};
+                return new HttpResult() { Cookie = string.Empty, Header = null, Html = ex.Message, StatusDescription = "配置参数时出错：" + ex.Message };
             }
 
             try
             {
                 //请求数据
-                using (response = (HttpWebResponse) request.GetResponse())
+                using (response = (HttpWebResponse)request.GetResponse())
                 {
                     GetData(item, result);
                 }
@@ -71,7 +73,7 @@ namespace GHttpHelper.Base
             {
                 if (ex.Response != null)
                 {
-                    using (response = (HttpWebResponse) ex.Response)
+                    using (response = (HttpWebResponse)ex.Response)
                     {
                         GetData(item, result);
                     }
@@ -116,13 +118,13 @@ namespace GHttpHelper.Base
             {
                 //配置参数时出错
                 return new HttpResult()
-                    {Cookie = response.Headers["set-cookie"] != null ? response.Headers["set-cookie"] : string.Empty, Header = null, Html = ex.Message, StatusDescription = "配置参数时出错：" + ex.Message};
+                    { Cookie = response.Headers["set-cookie"] != null ? response.Headers["set-cookie"] : string.Empty, Header = null, Html = ex.Message, StatusDescription = "配置参数时出错：" + ex.Message };
             }
 
             try
             {
                 //请求数据
-                using (response = (HttpWebResponse) request.GetResponse())
+                using (response = (HttpWebResponse)request.GetResponse())
                 {
                     //成功 不做处理只回成功状态
                     return new HttpResult()
@@ -134,7 +136,7 @@ namespace GHttpHelper.Base
             }
             catch (WebException ex)
             {
-                using (response = (HttpWebResponse) ex.Response)
+                using (response = (HttpWebResponse)ex.Response)
                 {
                     //不做处理只回成功状态
                     return new HttpResult()
@@ -351,7 +353,7 @@ namespace GHttpHelper.Base
             }
 
             //初始化对像，并设置请求的URL地址
-            request = (HttpWebRequest) WebRequest.Create(item.URL);
+            request = (HttpWebRequest)WebRequest.Create(item.URL);
             if (item.IPEndPoint != null)
             {
                 _IPEndPoint = item.IPEndPoint;
@@ -365,10 +367,12 @@ namespace GHttpHelper.Base
             SetCerList(item);
             //设置Header参数
             if (item.Header != null && item.Header.Count > 0)
+            {
                 foreach (var key in item.Header.AllKeys)
                 {
                     request.Headers.Add(key, item.Header[key]);
                 }
+            }
 
             // 设置代理
             SetProxy(item);
@@ -387,10 +391,21 @@ namespace GHttpHelper.Base
             if (item.IfModifiedSince != null) request.IfModifiedSince = Convert.ToDateTime(item.IfModifiedSince);
             //Accept
             request.Accept = item.Accept;
-            //ContentType返回类型
-            request.ContentType = item.ContentType;
-            //UserAgent客户端的访问类型，包括浏览器版本和操作系统信息
-            request.UserAgent = item.UserAgent;
+            //ContentType返回类型 
+            if (item.Header?["Content-Type"] != null)
+            {
+                item.ContentType = item.Header["Content-Type"];
+            }
+            //UserAgent客户端的访问类型，包括浏览器版本和操作系统信息;user-agent 有时会设置在item.header中，如果有的话，就使用header里的
+            if (item.Header?["User-Agent"] != null)
+            {
+                request.UserAgent = item.Header["User-Agent"];
+            }
+            else
+            {
+                request.UserAgent = item.UserAgent;
+            }
+
             // 编码
             encoding = item.Encoding;
             //设置安全凭证
