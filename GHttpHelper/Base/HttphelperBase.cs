@@ -394,8 +394,13 @@ namespace GHttpHelper.Base
             //ContentType返回类型 
             if (item.Header?["Content-Type"] != null)
             {
-                item.ContentType = item.Header["Content-Type"];
+                request.ContentType = item.Header["Content-Type"];
             }
+            else if (!string.IsNullOrEmpty(item.ContentType))
+            {
+                request.ContentType = item.ContentType;
+            }
+
             //UserAgent客户端的访问类型，包括浏览器版本和操作系统信息;user-agent 有时会设置在item.header中，如果有的话，就使用header里的
             if (item.Header?["User-Agent"] != null)
             {

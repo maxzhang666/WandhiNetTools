@@ -80,7 +80,7 @@ namespace GHttpHelper
             set { _Accept = value; }
         }
 
-        string _ContentType = "text/html";
+        string _ContentType;
 
         /// <summary>
         /// 请求返回类型默认 text/html
