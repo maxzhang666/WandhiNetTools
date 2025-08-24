@@ -5,7 +5,11 @@ using GHttpHelper;
 using Newtonsoft.Json;
 
 var head = new WebHeaderCollection { { "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" } };
-var html = GHttp.Get("https://pd.qq.com/g/4h8lf6qi21", head);
+var html = GHttp.Get("https://cloud.189.cn/api/open/share/getShareInfoByCodeV2.action?noCache=0.988092137406307&shareCode=mQbmqeQRvEzy",new WebHeaderCollection()
+{
+    { HttpRequestHeader.Accept,"application/json;charset=UTF-8"},
+    // { HttpRequestHeader.ContentType,"application/json;charset=UTF-8" }
+});
 // var html = GHttp.Get("https://1024tools.com/header", head);
 // var html = GHttp.Get("https://useragent.buyaocha.com", head);
 

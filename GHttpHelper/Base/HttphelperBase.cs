@@ -391,6 +391,11 @@ namespace GHttpHelper.Base
             if (item.IfModifiedSince != null) request.IfModifiedSince = Convert.ToDateTime(item.IfModifiedSince);
             //Accept
             request.Accept = item.Accept;
+            if (item.Header?["Accept"] != null)
+            {
+                request.Accept = item.Header?["Accept"];
+            }
+
             //ContentType返回类型 
             if (item.Header?["Content-Type"] != null)
             {
